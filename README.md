@@ -1,6 +1,7 @@
 ## Android滚动字幕
 可配置项：
 
+
 	String content = "测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容";
         ScrollTextView scrollTextView1 = findViewById(R.id.scrollTextView1);
         scrollTextView1.setText(content);//设置内容
