@@ -1,7 +1,7 @@
 ## Android滚动字幕
 可配置项：
 
-		String content = "测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容";
+	String content = "测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容";
         ScrollTextView scrollTextView1 = findViewById(R.id.scrollTextView1);
         scrollTextView1.setText(content);//设置内容
         scrollTextView1.setSpeed(-3);//设置速度，小于0向左，大于0向右
