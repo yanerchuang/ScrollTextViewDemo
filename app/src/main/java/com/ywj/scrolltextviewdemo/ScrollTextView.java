@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -20,17 +21,17 @@ public class ScrollTextView extends android.support.v7.widget.AppCompatTextView 
     private static final String TAG = "ScrollTextView";
     private String mText = "";
     private int mOffsetX = 0;
-    private Rect  mRect = new Rect();
+    private Rect mRect = new Rect();
 
-    private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
+    private ScheduledExecutorService executorService;
     /**
      * 速度，负数左移，正数右移。
      */
-    private int mSpeed = -3;
+    private int mSpeed = -2;
     /**
      * 一秒内更新次数
      */
-    private int FPS = 30;
+    private int FPS = 10;
     private int width;
 
     public ScrollTextView(Context context) {
@@ -48,14 +49,20 @@ public class ScrollTextView extends android.support.v7.widget.AppCompatTextView 
     }
 
     public void startScroll() {
-
+        Log.w(TAG, "startScroll");
+        mText = getText().toString();
+        if (TextUtils.isEmpty(mText)) {
+            Log.w(TAG, "mText isEmpty,return.");
+            return;
+        }
         if (mSpeed < 0) {
             //左移
+            mOffsetX = 0;
         } else if (mSpeed > 0) {
             //右移
             mOffsetX = width - mRect.right;
         }
-
+        executorService = new ScheduledThreadPoolExecutor(1);
         executorService.scheduleAtFixedRate(new Runnable() {
 
             @Override
@@ -76,13 +83,13 @@ public class ScrollTextView extends android.support.v7.widget.AppCompatTextView 
                     if (mOffsetX > width) {
                         mOffsetX = -mRect.right;
                     }
-                }else {
+                } else {
                     Log.w(TAG, "mSpeed can't be zero.");
+                    executorService.shutdown();
                     return;
                 }
                 mOffsetX += mSpeed;
                 postInvalidate();
-
             }
         }, 0, 1000 / FPS, TimeUnit.MILLISECONDS);
     }
@@ -90,7 +97,7 @@ public class ScrollTextView extends android.support.v7.widget.AppCompatTextView 
 
     @Override
     protected void onDraw(Canvas canvas) {
-        mText = getText().toString();
+
         TextPaint textPaint = getPaint();
         textPaint.setColor(getCurrentTextColor());
         //获取文本区域大小，保存在mRect中。

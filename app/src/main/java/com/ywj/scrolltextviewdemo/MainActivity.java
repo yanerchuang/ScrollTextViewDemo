@@ -27,16 +27,8 @@ public class MainActivity extends AppCompatActivity {
         scrollTextView3.setSpeed(2);
         scrollTextView3.startScroll();
 
-
-
-
-
-
-
-
-
-
-
+        SimpleScroolTextView tvMarqueeView = findViewById(R.id.tvMarqueeView);
+        tvMarqueeView.setText(content);
 
     }
 }
